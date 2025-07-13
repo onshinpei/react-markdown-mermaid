@@ -3,7 +3,7 @@ import { rehypeMermaid, MermaidBlock } from '../src/index';
 import MarkdownExample from './MarkdownExample';
 
 const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState('flowchart');
+  const [activeTab, setActiveTab] = useState('markdown');
 
   const flowchart = `
     graph TD
@@ -149,8 +149,12 @@ const App: React.FC = () => {
           </div>
         )}
 
-        {Object.entries(examples).map(([key, example]) => (
-          <div key={key} className={`example ${activeTab === key ? 'active' : ''}`}>
+        {Object.entries(examples).map(([key, example]) => {
+          if (activeTab !== key) {
+            return null;
+          }
+          return (
+            <div key={key} className={`example ${activeTab === key ? 'active' : ''}`}>
             <h2>{example.title}</h2>
             <p>{example.description}</p>
 
@@ -218,7 +222,8 @@ ${JSON.stringify(createMermaidNode(example.code), null, 2)}`}</code>
               </pre>
             </details>
           </div>
-        ))}
+          );
+        })}
       </main>
 
       <footer className="app-footer">

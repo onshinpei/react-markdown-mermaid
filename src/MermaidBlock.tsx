@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import mermaid from 'mermaid';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import MermaidService from './mermaidService';
 
 export interface MermaidBlockProps {
   code: string;
@@ -9,35 +9,29 @@ export interface MermaidBlockProps {
   style?: React.CSSProperties;
 }
 
-const MermaidBlock: React.FC<MermaidBlockProps> = ({ code, mermaidConfig, ssr = false, className = 'mermaid-block', style }) => {
+const MermaidBlock: React.FC<MermaidBlockProps> = ({ code, ssr = false, className = 'mermaid-block', style }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [svg, setSvg] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   // 生成唯一ID
-  const chartId = `mermaid-${Math.random().toString(36).substr(2, 9)}`;
+  const chartId = useMemo(() => `mermaid-${Math.random().toString(36).substr(2, 9)}`, []);
+
+  // 获取 mermaid 服务实例
+  const mermaidService = MermaidService.getInstance();
 
   useEffect(() => {
     const initMermaid = async () => {
       try {
-        if (mermaidConfig) {
-          mermaid.initialize(mermaidConfig);
-        } else {
-          mermaid.initialize({
-            startOnLoad: false,
-            theme: 'default',
-          });
-        }
+        await mermaidService.initialize({startOnLoad: false});
       } catch (err) {
         console.error('Failed to initialize mermaid:', err);
       }
     };
 
-    if (!ssr) {
-      initMermaid();
-    }
-  }, [mermaidConfig, ssr]);
+    initMermaid();
+  }, []);
 
   useEffect(() => {
     const renderChart = async () => {
@@ -49,7 +43,7 @@ const MermaidBlock: React.FC<MermaidBlockProps> = ({ code, mermaidConfig, ssr = 
         setIsLoading(true);
         setError(null);
 
-        const { svg } = await mermaid.render(chartId, code);
+        const { svg } = await mermaidService.render(chartId, code);
         setSvg(svg);
         setIsLoading(false);
       } catch (err) {
@@ -61,12 +55,8 @@ const MermaidBlock: React.FC<MermaidBlockProps> = ({ code, mermaidConfig, ssr = 
     };
 
     // 延迟渲染，确保mermaid已初始化
-    const timer = setTimeout(() => {
-      renderChart();
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, [code, chartId, ssr]);
+    renderChart();
+  }, [code, chartId, ]);
 
   // 服务端渲染
   if (ssr) {

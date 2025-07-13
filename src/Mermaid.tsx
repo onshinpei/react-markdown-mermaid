@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import mermaid from 'mermaid';
 import { MermaidProps, MermaidState } from './types';
+import MermaidService from './mermaidService';
 
 const Mermaid: React.FC<MermaidProps> = ({
   chart,
   config,
   id,
-  className = 'react-mermaid',
+  className = 'react-markdown-mermaid',
   style,
   onLoad,
   onError,
@@ -26,18 +26,14 @@ const Mermaid: React.FC<MermaidProps> = ({
   // 生成唯一ID
   const chartId = id || `mermaid-${Math.random().toString(36).substr(2, 9)}`;
 
+  // 获取 mermaid 服务实例
+  const mermaidService = MermaidService.getInstance();
+
   useEffect(() => {
     // 初始化mermaid
     const initMermaid = async () => {
       try {
-        if (config) {
-          mermaid.initialize(config);
-        } else {
-          mermaid.initialize({
-            startOnLoad: false,
-            theme: 'default',
-          });
-        }
+        await mermaidService.initialize(config);
         setState((prev) => ({ ...prev, isLoading: false }));
         onLoad?.();
       } catch (error) {
@@ -61,8 +57,8 @@ const Mermaid: React.FC<MermaidProps> = ({
       try {
         setState((prev) => ({ ...prev, isLoading: true, hasError: false }));
 
-        // 渲染图表
-        const { svg } = await mermaid.render(chartId, chart);
+        // 使用服务渲染图表
+        const { svg } = await mermaidService.render(chartId, chart);
         setSvg(svg);
         setState({ isLoading: false, hasError: false });
         onRender?.();
