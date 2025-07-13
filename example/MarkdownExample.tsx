@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { rehypeMermaid, MermaidBlock } from '../src/index';
 import type { MermaidBlockProps } from '../src/MermaidBlock';
 
@@ -144,6 +145,7 @@ function hello() {
     <div className="markdown-example">
       <div className="markdown-container">
         <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
           rehypePlugins={[[rehypeMermaid, { mermaidConfig, ssr: false }]]}
           components={{
             MermaidBlock: MermaidBlock,

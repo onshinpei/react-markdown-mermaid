@@ -63,61 +63,31 @@ const Mermaid: React.FC<MermaidProps> = ({
 
         // 渲染图表
         const { svg } = await mermaid.render(chartId, chart);
-
         setSvg(svg);
-        console.log('svg', svg);
         setState({ isLoading: false, hasError: false });
-        // onRender?.();
+        onRender?.();
       } catch (error) {
         const err = error instanceof Error ? error : new Error('Failed to render mermaid chart');
         setState({ isLoading: false, hasError: true, error: err });
-        // onError?.(err);
+        onError?.(err);
 
         setSvg('');
       }
     };
 
     // 延迟渲染，确保mermaid已初始化
-    const timer = setTimeout(() => {
-      renderChart();
-    }, 0);
+    renderChart();
+  }, [ chart, state.isLoading]);
 
-    return () => clearTimeout(timer);
-  }, [state.isLoading]);
 
-  // 服务端渲染
-  // if (ssr) {
-  //   return <div id={chartId} className={className} style={style} data-mermaid-chart={chart} />;
-  // }
+  if (state.hasError) {
+    return <div className={className} style={style}>{errorText}</div>;
+  }
 
-  // 加载状态
-  // if (state.isLoading && showLoading) {
-  //   return (
-  //     <div className={`${className} loading`} style={style}>
-  //       <div className="loading-spinner">
-  //         <div className="spinner"></div>
-  //         <span>{loadingText}</span>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
-  // // 错误状态
-  // if (state.hasError) {
-  //   return (
-  //     <div className={`${className} error`} style={style}>
-  //       <div className="error-message">
-  //         <span>{errorText}</span>
-  //         {state.error && <details>{state.error.message}</details>}
-  //       </div>
-  //     </div>
-  //   );
-  // }
 
   // 正常渲染
   return (
     <div className={className} style={style}>
-      <div id={chartId} dangerouslySetInnerHTML={{ __html: svg }} />
       <div dangerouslySetInnerHTML={{ __html: svg }} />
     </div>
   );
