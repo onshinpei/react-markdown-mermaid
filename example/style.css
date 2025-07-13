@@ -1,5 +1,10 @@
 /* Example 页面样式 */
 
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
 /* 演示页面样式 */
 .app {
   min-height: 100vh;
