@@ -1,11 +1,13 @@
 const resolve = require('@rollup/plugin-node-resolve');
 const commonjs = require('@rollup/plugin-commonjs');
 const typescript = require('@rollup/plugin-typescript');
-const dts = require('rollup-plugin-dts');
+const { dts } = require('rollup-plugin-dts');
+const terser = require('@rollup/plugin-terser');
 
 const packageJson = require('./package.json');
 
 module.exports = [
+  // 主包构建
   {
     input: 'src/index.ts',
     output: [
@@ -13,19 +15,78 @@ module.exports = [
         file: packageJson.main,
         format: 'cjs',
         sourcemap: true,
+        exports: 'named',
       },
       {
         file: packageJson.module,
         format: 'esm',
         sourcemap: true,
+        exports: 'named',
+      },
+      {
+        file: 'dist/index.min.js',
+        format: 'umd',
+        name: 'ReactMarkdownMermaid',
+        sourcemap: true,
+        exports: 'named',
+        globals: {
+          react: 'React',
+          'react-dom': 'ReactDOM',
+          mermaid: 'mermaid',
+          'unist-util-visit': 'unistUtilVisit',
+        },
       },
     ],
-    plugins: [resolve(), commonjs(), typescript({ tsconfig: './tsconfig.json' })],
-    external: ['react', 'react-dom', 'mermaid'],
+    plugins: [
+      resolve({
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      }),
+      commonjs({
+        include: 'node_modules/**',
+      }),
+      typescript({
+        tsconfig: './tsconfig.json',
+        declaration: false,
+        declarationMap: false,
+        emitDeclarationOnly: false,
+      }),
+      terser({
+        format: {
+          comments: false,
+        },
+      }),
+    ],
+    external: ['react', 'react-dom', 'mermaid', 'unified', 'unist-util-visit'],
   },
+  // 类型定义构建
   {
-    input: 'dist/cjs/index.d.ts',
-    output: [{ file: 'dist/index.d.ts', format: 'es' }],
-    plugins: [dts()],
+    input: 'src/index.ts',
+    output: [
+      {
+        file: 'dist/index.d.ts',
+        format: 'es',
+      },
+      {
+        file: 'dist/esm/index.d.ts',
+        format: 'es',
+      },
+    ],
+    plugins: [
+      resolve({
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      }),
+      commonjs({
+        include: 'node_modules/**',
+      }),
+      dts({
+        compilerOptions: {
+          baseUrl: './',
+          paths: {
+            '*': ['node_modules/*', 'src/*'],
+          },
+        },
+      }),
+    ],
+    external: ['react', 'react-dom', 'mermaid', 'unified', 'unist-util-visit'],
   },
 ];
