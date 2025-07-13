@@ -2,7 +2,6 @@ const resolve = require('@rollup/plugin-node-resolve');
 const commonjs = require('@rollup/plugin-commonjs');
 const typescript = require('@rollup/plugin-typescript');
 const { dts } = require('rollup-plugin-dts');
-const terser = require('@rollup/plugin-terser');
 
 const packageJson = require('./package.json');
 
@@ -16,12 +15,16 @@ module.exports = [
         format: 'cjs',
         sourcemap: true,
         exports: 'named',
+        compact: false,
+        indent: true,
       },
       {
         file: packageJson.module,
         format: 'esm',
         sourcemap: true,
         exports: 'named',
+        compact: false,
+        indent: true,
       },
       {
         file: 'dist/index.min.js',
@@ -29,6 +32,8 @@ module.exports = [
         name: 'ReactMarkdownMermaid',
         sourcemap: true,
         exports: 'named',
+        compact: false,
+        indent: true,
         globals: {
           react: 'React',
           'react-dom': 'ReactDOM',
@@ -50,11 +55,7 @@ module.exports = [
         declarationMap: false,
         emitDeclarationOnly: false,
       }),
-      terser({
-        format: {
-          comments: false,
-        },
-      }),
+      
     ],
     external: ['react', 'react-dom', 'mermaid', 'unified', 'unist-util-visit'],
   },
