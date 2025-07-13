@@ -57,7 +57,19 @@ module.exports = [
       }),
       
     ],
-    external: ['react', 'react-dom', 'mermaid', 'unified', 'unist-util-visit'],
+    external: [
+      'react', 
+      'react-dom', 
+      'mermaid', 
+      'unified', 
+      'unist-util-visit',
+      'react/jsx-runtime',
+      'react/jsx-dev-runtime',
+      'react/jsx-runtime.production.min',
+      'react/jsx-runtime.development',
+      'react/jsx-dev-runtime.production.min',
+      'react/jsx-dev-runtime.development'
+    ],
   },
   // 类型定义构建
   {
@@ -88,6 +100,18 @@ module.exports = [
         },
       }),
     ],
-    external: ['react', 'react-dom', 'mermaid', 'unified', 'unist-util-visit'],
+    external: [
+      'react', 
+      'react-dom', 
+      'mermaid', 
+      'unified', 
+      'unist-util-visit',
+      'react/jsx-runtime',
+      'react/jsx-dev-runtime',
+      'react/jsx-runtime.production.min',
+      'react/jsx-runtime.development',
+      'react/jsx-dev-runtime.production.min',
+      'react/jsx-dev-runtime.development'
+    ],
   },
 ];
