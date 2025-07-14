@@ -2,9 +2,9 @@ import type { MermaidConfig } from 'mermaid';
 
 export interface MermaidProps {
   /** Mermaid图表代码 */
-  chart: string;
+  code: string;
   /** Mermaid配置选项 */
-  config?: MermaidConfig;
+  mermaidConfig?: MermaidConfig;
   /** 图表ID，如果不提供会自动生成 */
   id?: string;
   /** 自定义CSS类名 */
@@ -23,8 +23,6 @@ export interface MermaidProps {
   loadingText?: string;
   /** 错误状态文本 */
   errorText?: string;
-  /** 是否在服务端渲染 */
-  ssr?: boolean;
 }
 
 export interface MermaidState {

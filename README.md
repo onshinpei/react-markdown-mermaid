@@ -8,7 +8,6 @@
 - 🔧 **易于使用** - 简单的API，快速上手
 - 📝 **Markdown集成** - 与react-markdown完美集成
 - 🎨 **主题支持** - 支持自定义Mermaid主题和配置
-- 🔄 **SSR支持** - 支持服务端渲染
 - 📱 **响应式** - 自适应容器宽度
 - 🛡️ **错误处理** - 完善的错误处理和加载状态
 - 📦 **TypeScript** - 完整的TypeScript类型支持
@@ -131,7 +130,6 @@ sequenceDiagram
 | `showLoading` | `boolean`                | `true`                       | 是否显示加载状态 |
 | `loadingText` | `string`                 | `'Loading diagram...'`       | 加载文本         |
 | `errorText`   | `string`                 | `'Failed to render diagram'` | 错误文本         |
-| `ssr`         | `boolean`                | `false`                      | 是否服务端渲染   |
 
 #### 示例
 
@@ -156,13 +154,40 @@ import { Mermaid } from 'react-markdown-mermaid';
 
 #### Props
 
-| 属性            | 类型            | 默认值            | 描述            |
-| --------------- | --------------- | ----------------- | --------------- |
-| `code`          | `string`        | -                 | Mermaid图表代码 |
-| `mermaidConfig` | `any`           | -                 | Mermaid配置     |
-| `ssr`           | `boolean`       | `false`           | 是否服务端渲染  |
-| `className`     | `string`        | `'mermaid-block'` | CSS类名         |
-| `style`         | `CSSProperties` | -                 | 内联样式        |
+| 属性            | 类型                     | 默认值                       | 描述             |
+| --------------- | ------------------------ | ---------------------------- | ---------------- |
+| `code`          | `string`                 | -                            | Mermaid图表代码  |
+| `mermaidConfig` | `MermaidConfig`          | -                            | Mermaid配置      |
+| `id`            | `string`                 | 自动生成                     | 图表ID           |
+| `className`     | `string`                 | `'mermaid-block'`            | CSS类名          |
+| `style`         | `CSSProperties`          | -                            | 内联样式         |
+| `onLoad`        | `() => void`             | -                            | 加载完成回调     |
+| `onError`       | `(error: Error) => void` | -                            | 错误回调         |
+| `onRender`      | `() => void`             | -                            | 渲染完成回调     |
+| `showLoading`   | `boolean`                | `true`                       | 是否显示加载状态 |
+| `loadingText`   | `string`                 | `'Loading diagram...'`       | 加载文本         |
+| `errorText`     | `string`                 | `'Failed to render diagram'` | 错误文本         |
+
+#### 示例
+
+```tsx
+import { MermaidBlock } from 'react-markdown-mermaid';
+
+<MermaidBlock
+  code={chartCode}
+  mermaidConfig={{
+    theme: 'dark',
+    flowchart: { useMaxWidth: true },
+  }}
+  className="my-mermaid-block"
+  onLoad={() => console.log('图表加载完成')}
+  onError={(error) => console.error('渲染错误:', error)}
+  onRender={() => console.log('图表渲染完成')}
+  showLoading={true}
+  loadingText="正在渲染图表..."
+  errorText="图表渲染失败"
+/>;
+```
 
 ### rehypeMermaid 插件
 
@@ -170,10 +195,9 @@ import { Mermaid } from 'react-markdown-mermaid';
 
 #### 选项
 
-| 属性            | 类型      | 默认值  | 描述           |
-| --------------- | --------- | ------- | -------------- |
-| `mermaidConfig` | `any`     | -       | Mermaid配置    |
-| `ssr`           | `boolean` | `false` | 是否服务端渲染 |
+| 属性            | 类型  | 默认值 | 描述        |
+| --------------- | ----- | ------ | ----------- |
+| `mermaidConfig` | `any` | -      | Mermaid配置 |
 
 ## 🎨 样式定制
 
@@ -291,19 +315,6 @@ const mermaidConfig = {
     useMaxWidth: true,
   },
 };
-```
-
-### 服务端渲染
-
-```tsx
-// 在服务端渲染时
-<Mermaid
-  chart={chartCode}
-  ssr={true}
-  onLoad={() => {
-    // 客户端水合后执行
-  }}
-/>
 ```
 
 ### 错误处理

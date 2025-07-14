@@ -4,8 +4,6 @@ import type { Plugin } from 'unified';
 export interface RehypeMermaidOptions {
   /** 自定义mermaid配置 */
   mermaidConfig?: any;
-  /** 是否在服务端渲染 */
-  ssr?: boolean;
 }
 
 /**
@@ -29,7 +27,6 @@ export const rehypeMermaid: Plugin<[RehypeMermaidOptions?]> = (options = {}) => 
           node.properties = {
             code,
             mermaidConfig: options.mermaidConfig,
-            ssr: options.ssr,
           };
           node.children = [];
         }
