@@ -10,15 +10,14 @@
   "exports": {
     ".": {
       "import": {
-        "types": "./dist/esm/index.d.ts",
+        "types": "./dist/index.d.ts",
         "default": "./dist/esm/index.js"
       },
       "require": {
-        "types": "./dist/cjs/index.d.ts",
+        "types": "./dist/index.d.ts",
         "default": "./dist/cjs/index.js"
       }
-    },
-    "./style.css": "./src/style.css"
+    }
   },
   "files": [
     "dist",
@@ -73,8 +72,10 @@
     "@vitejs/plugin-react": "^4.0.0",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.5.1",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
+    "prettier": "^3.6.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-markdown": "^9.0.0",

@@ -5,6 +5,8 @@ const { dts } = require('rollup-plugin-dts');
 
 const packageJson = require('./package.json');
 
+const external = ['react', 'react-dom', 'mermaid', 'unified', 'unist-util-visit', 'react/jsx-runtime'];
+
 module.exports = [
   // 主包构建
   {
@@ -26,21 +28,6 @@ module.exports = [
         compact: false,
         indent: true,
       },
-      {
-        file: 'dist/index.min.js',
-        format: 'umd',
-        name: 'ReactMarkdownMermaid',
-        sourcemap: true,
-        exports: 'named',
-        compact: false,
-        indent: true,
-        globals: {
-          react: 'React',
-          'react-dom': 'ReactDOM',
-          mermaid: 'mermaid',
-          'unist-util-visit': 'unistUtilVisit',
-        },
-      },
     ],
     plugins: [
       resolve({
@@ -55,21 +42,8 @@ module.exports = [
         declarationMap: false,
         emitDeclarationOnly: false,
       }),
-      
     ],
-    external: [
-      'react', 
-      'react-dom', 
-      'mermaid', 
-      'unified', 
-      'unist-util-visit',
-      'react/jsx-runtime',
-      'react/jsx-dev-runtime',
-      'react/jsx-runtime.production.min',
-      'react/jsx-runtime.development',
-      'react/jsx-dev-runtime.production.min',
-      'react/jsx-dev-runtime.development'
-    ],
+    external,
   },
   // 类型定义构建
   {
@@ -77,10 +51,6 @@ module.exports = [
     output: [
       {
         file: 'dist/index.d.ts',
-        format: 'es',
-      },
-      {
-        file: 'dist/esm/index.d.ts',
         format: 'es',
       },
     ],
@@ -100,18 +70,6 @@ module.exports = [
         },
       }),
     ],
-    external: [
-      'react', 
-      'react-dom', 
-      'mermaid', 
-      'unified', 
-      'unist-util-visit',
-      'react/jsx-runtime',
-      'react/jsx-dev-runtime',
-      'react/jsx-runtime.production.min',
-      'react/jsx-runtime.development',
-      'react/jsx-dev-runtime.production.min',
-      'react/jsx-dev-runtime.development'
-    ],
+    external,
   },
 ];

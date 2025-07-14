@@ -1,16 +1,15 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { MermaidConfig } from 'mermaid';
 import MermaidService from './mermaidService';
 
 export interface MermaidBlockProps {
   code: string;
-  mermaidConfig?: any;
-  ssr?: boolean;
+  mermaidConfig?: MermaidConfig;
   className?: string;
   style?: React.CSSProperties;
 }
 
-const MermaidBlock: React.FC<MermaidBlockProps> = ({ code, ssr = false, className = 'mermaid-block', style }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
+const MermaidBlock: React.FC<MermaidBlockProps> = ({ code, className, style, mermaidConfig }) => {
   const [svg, setSvg] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -24,7 +23,7 @@ const MermaidBlock: React.FC<MermaidBlockProps> = ({ code, ssr = false, classNam
   useEffect(() => {
     const initMermaid = async () => {
       try {
-        await mermaidService.initialize({startOnLoad: false});
+        await mermaidService.initialize({ startOnLoad: false, ...mermaidConfig });
       } catch (err) {
         console.error('Failed to initialize mermaid:', err);
       }
@@ -35,7 +34,7 @@ const MermaidBlock: React.FC<MermaidBlockProps> = ({ code, ssr = false, classNam
 
   useEffect(() => {
     const renderChart = async () => {
-      if (!code.trim() || ssr) {
+      if (!code.trim()) {
         return;
       }
 
@@ -56,35 +55,12 @@ const MermaidBlock: React.FC<MermaidBlockProps> = ({ code, ssr = false, classNam
 
     // 延迟渲染，确保mermaid已初始化
     renderChart();
-  }, [code, chartId, ]);
-
-  // 服务端渲染
-  if (ssr) {
-    return (
-      <div className={className} style={style}>
-        <pre className="language-mermaid">
-          <code>{code}</code>
-        </pre>
-      </div>
-    );
-  }
-
-  // 加载状态
-  if (isLoading) {
-    return (
-      <div className={`${className} loading`} style={style}>
-        <div className="loading-spinner">
-          <div className="spinner"></div>
-          <span>Loading diagram...</span>
-        </div>
-      </div>
-    );
-  }
+  }, [code, chartId]);
 
   // 错误状态
   if (error) {
     return (
-      <div className={`${className} error`} style={style}>
+      <div className={className ? `react-markdown-mermaid ${className} error` : 'react-markdown-mermaid error'} style={style}>
         <div className="error-message">
           <span>Failed to render diagram</span>
           <details>{error}</details>
@@ -94,12 +70,7 @@ const MermaidBlock: React.FC<MermaidBlockProps> = ({ code, ssr = false, classNam
   }
 
   // 正常渲染
-  return (
-    <div className={className} style={style}>
-      <div ref={containerRef} id={chartId} dangerouslySetInnerHTML={{ __html: svg }} />
-      <div dangerouslySetInnerHTML={{ __html: svg }} />
-    </div>
-  );
+  return <div className={className ? `react-markdown-mermaid ${className}` : 'react-markdown-mermaid'} style={style} dangerouslySetInnerHTML={{ __html: svg }} />;
 };
 
 export default MermaidBlock;

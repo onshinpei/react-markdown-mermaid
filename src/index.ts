@@ -1,5 +1,3 @@
-// 导出独立的Mermaid组件
-export { default as Mermaid } from './Mermaid';
 export type { MermaidProps, MermaidState } from './types';
 
 // 导出MermaidBlock组件
