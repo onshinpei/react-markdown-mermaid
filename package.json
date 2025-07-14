@@ -1,12 +1,10 @@
 {
-  "name": "react-mermaid",
-  "version": "0.0.0",
+  "name": "react-markdown-mermaid",
+  "version": "0.0.2",
   "description": "A React component for rendering Mermaid diagrams",
   "main": "./dist/cjs/index.js",
-  "types": "./dist/cjs/index.d.ts",
+  "types": "./dist/index.d.ts",
   "module": "./dist/esm/index.js",
-  "unpkg": "./dist/index.min.js",
-  "jsdelivr": "./dist/index.min.js",
   "exports": {
     ".": {
       "import": {
@@ -20,41 +18,26 @@
     }
   },
   "files": [
-    "dist",
-    "src/style.css"
+    "dist"
   ],
   "scripts": {
     "build": "rimraf dist && rollup -c",
     "dev": "vite",
     "preview": "vite preview",
     "build:demo": "vite build",
-    "release": "npm run build && npm publish",
+    "release": "npm run build && node scripts/set-tag.cjs && cross-env RELEASE_MODE=true npm publish",
     "prepublishOnly": "node scripts/prepublish.js",
     "lint": "eslint ."
   },
   "keywords": [
-    "react",
-    "mermaid",
-    "diagram",
-    "flowchart",
-    "sequence",
-    "gantt",
-    "class",
-    "state",
-    "pie",
-    "gitgraph",
-    "journey",
-    "c4",
-    "mindmap",
-    "timeline",
-    "zenuml",
-    "sankey"
+    "react-markdown-mermaid",
+    "react-mermaid"
   ],
   "author": "Your Name",
   "license": "MIT",
   "peerDependencies": {
-    "react": ">=16.8.0",
-    "react-dom": ">=16.8.0"
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
   },
   "dependencies": {
     "mermaid": "^10.6.1",
@@ -70,6 +53,7 @@
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "@vitejs/plugin-react": "^4.0.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.5.1",
@@ -87,5 +71,8 @@
     "typescript": "^5.0.0",
     "typescript-eslint": "^8.36.0",
     "vite": "^5.0.0"
+  },
+  "publishConfig": {
+    "tag": "latest"
   }
 }
