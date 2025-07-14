@@ -24,7 +24,7 @@
     "build": "rimraf dist && rollup -c",
     "dev": "vite",
     "preview": "vite preview",
-    "build:demo": "vite build",
+    "build:demo": "rimraf docs && vite build",
     "release": "npm run build && node scripts/set-tag.cjs && cross-env RELEASE_MODE=true npm publish",
     "prepublishOnly": "node scripts/prepublish.js",
     "lint": "eslint ."

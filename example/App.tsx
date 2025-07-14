@@ -124,7 +124,7 @@ const App: React.FC = () => {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>React Mermaid 演示</h1>
+        <h1>react-markdown-mermaid 演示</h1>
         <p>一个用于在React应用中渲染Mermaid图表的轻量级组件和rehype插件</p>
       </header>
 
