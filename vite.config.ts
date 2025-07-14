@@ -4,6 +4,7 @@ import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [react()],
+  base: '/react-markdown-mermaid/',
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
@@ -14,7 +15,7 @@ export default defineConfig({
     open: true,
   },
   build: {
-    outDir: 'dist-demo',
+    outDir: 'docs',
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
