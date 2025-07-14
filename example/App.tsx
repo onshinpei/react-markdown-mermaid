@@ -155,56 +155,24 @@ const App: React.FC = () => {
           }
           return (
             <div key={key} className={`example ${activeTab === key ? 'active' : ''}`}>
-            <h2>{example.title}</h2>
-            <p>{example.description}</p>
+              <h2>{example.title}</h2>
+              <p>{example.description}</p>
 
-            <div className="chart-container">
-              <MermaidBlock code={example.code} className="demo-mermaid" />
-            </div>
+              <div className="chart-container">
+                <MermaidBlock code={example.code} className="demo-mermaid" />
+              </div>
 
-            <details className="code-details">
-              <summary>查看Mermaid代码</summary>
-              <pre className="code-block">
-                <code>{example.code}</code>
-              </pre>
-            </details>
+              <details className="code-details">
+                <summary>查看Mermaid代码</summary>
+                <pre className="code-block">
+                  <code>{example.code}</code>
+                </pre>
+              </details>
 
-            <details className="code-details">
-              <summary>rehype插件使用方法</summary>
-              <pre className="code-block">
-                <code>{`// 1. 在markdown中使用
-\`\`\`mermaid
-${example.code}
-\`\`\`
-
-// 2. 使用rehype插件处理
-import { rehypeMermaid, MermaidBlock } from 'react-mermaid';
-
-// 配置rehype插件
-const mermaidConfig = {
-  theme: 'default',
-  flowchart: { useMaxWidth: true }
-};
-
-// 在rehype插件链中使用
-rehypePlugins: [
-  [rehypeMermaid, { mermaidConfig, ssr: false }]
-]
-
-// 3. 注册MermaidBlock组件
-components: {
-  MermaidBlock
-}
-
-// 4. 处理后的AST节点示例
-${JSON.stringify(createMermaidNode(example.code), null, 2)}`}</code>
-              </pre>
-            </details>
-
-            <details className="code-details">
-              <summary>直接使用MermaidBlock组件</summary>
-              <pre className="code-block">
-                <code>{`import { MermaidBlock } from 'react-mermaid';
+              <details className="code-details">
+                <summary>直接使用MermaidBlock组件</summary>
+                <pre className="code-block">
+                  <code>{`import { MermaidBlock } from 'react-markdown-mermaid';
 
 // 基本用法
 <MermaidBlock code="${example.code.replace(/\n/g, '\\n')}" />
@@ -214,14 +182,15 @@ ${JSON.stringify(createMermaidNode(example.code), null, 2)}`}</code>
   code="${example.code.replace(/\n/g, '\\n')}"
   mermaidConfig={{
     theme: 'dark',
+    startOnLoad: false,
     flowchart: { useMaxWidth: true }
   }}
   className="my-mermaid"
   style={{ border: '1px solid #ccc' }}
 />`}</code>
-              </pre>
-            </details>
-          </div>
+                </pre>
+              </details>
+            </div>
           );
         })}
       </main>
