@@ -1,90 +1,85 @@
 # React Markdown Mermaid
 
-一个用于在React应用中渲染Mermaid图表的轻量级组件和rehype插件。支持在react-markdown中自动渲染Mermaid图表，提供完整的TypeScript支持。
+[中文文档](README.zh.md)
 
-## ✨ 特性
+A lightweight component and rehype plugin to render Mermaid diagrams in React applications. It supports automatic rendering of `Mermaid` diagrams inside `react-markdown`, and can also be used as a standalone component.
 
-- 🎯 **轻量级** - 只包含必要的代码，React相关依赖作为外部依赖
-- 🔧 **易于使用** - 简单的API，快速上手
-- 📝 **Markdown集成** - 与react-markdown完美集成
-- 🎨 **主题支持** - 支持自定义Mermaid主题和配置
-- 📱 **响应式** - 自适应容器宽度
-- 🛡️ **错误处理** - 完善的错误处理和加载状态
-- 📦 **TypeScript** - 完整的TypeScript类型支持
+**If you need a more feature-rich Mermaid rendering component, we recommend using [ds-markdown-mermaid-plugin](https://github.com/onshinpei/ds-markdown-mermaid-plugin).**
 
-## 📦 安装
+## 📦 Installation
 
 ```bash
 npm install react-markdown-mermaid
-# 或
+# or
 yarn add react-markdown-mermaid
-# 或
+# or
 pnpm add react-markdown-mermaid
 ```
 
-## 🚀 快速开始
+## 🚀 Quick Start
 
-### 1. 与 react-markdown 集成
+### 1. Integrate with react-markdown
 
-```tsx
+````tsx
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import { rehypeMermaid, MermaidBlock } from 'react-markdown-mermaid';
 
 const App = () => {
   const markdown = `
-# 我的文档
+# My Document
 
-这是一个流程图：
+Here is a flowchart:
 
-\`\`\`mermaid
+```mermaid
 graph TD
-  A[开始] --> B{判断条件}
-  B -->|是| C[处理A]
-  B -->|否| D[处理B]
-  C --> E[结束]
+  A[Start] --> B{Condition}
+  B -->|Yes| C[Handle A]
+  B -->|No| D[Handle B]
+  C --> E[End]
   D --> E
-\`\`\`
+````
 
-这是一个序列图：
+Here is a sequence diagram:
 
-\`\`\`mermaid
+```mermaid
 sequenceDiagram
-  participant 用户
-  participant 系统
-  participant 数据库
-  
-  用户->>系统: 登录请求
-  系统->>数据库: 验证用户
-  数据库-->>系统: 返回结果
-  系统-->>用户: 登录响应
-\`\`\`
-  `;
+  participant User
+  participant System
+  participant Database
 
-  return (
-    <ReactMarkdown
-      rehypePlugins={[
-        [
-          rehypeMermaid,
-          {
-            mermaidConfig: {
-              theme: 'default',
-              flowchart: { useMaxWidth: true },
-            },
-          },
-        ],
-      ]}
-      components={{
-        MermaidBlock: MermaidBlock,
-      }}
-    >
-      {markdown}
-    </ReactMarkdown>
-  );
-};
+  User->>System: Login request
+  System->>Database: Verify user
+  Database-->>System: Return result
+  System-->>User: Login response
 ```
 
-### 2. 基本用法 - 独立组件
+`;
+
+return (
+<ReactMarkdown
+rehypePlugins={[
+[
+rehypeMermaid,
+{
+mermaidConfig: {
+theme: 'default',
+flowchart: { useMaxWidth: true },
+},
+},
+],
+]}
+components={{
+        MermaidBlock: MermaidBlock,
+      }} >
+{markdown}
+</ReactMarkdown>
+);
+};
+
+````
+
+### 2. Basic Usage - Standalone Component
 
 ```tsx
 import React from 'react';
@@ -93,45 +88,45 @@ import { Mermaid } from 'react-markdown-mermaid';
 const App = () => {
   const chart = `
     graph TD
-      A[开始] --> B{判断条件}
-      B -->|是| C[处理A]
-      B -->|否| D[处理B]
-      C --> E[结束]
+      A[Start] --> B{Condition}
+      B -->|Yes| C[Handle A]
+      B -->|No| D[Handle B]
+      C --> E[End]
       D --> E
   `;
 
   return (
     <div>
-      <h1>流程图示例</h1>
+      <h1>Flowchart Example</h1>
       <Mermaid chart={chart} />
     </div>
   );
 };
-```
+````
 
-## 📚 API 文档
+## 📚 API Reference
 
-### Mermaid 组件
+### Mermaid Component
 
-独立的Mermaid图表组件。
+Standalone Mermaid diagram component.
 
 #### Props
 
-| 属性          | 类型                     | 默认值                       | 描述             |
-| ------------- | ------------------------ | ---------------------------- | ---------------- |
-| `chart`       | `string`                 | -                            | Mermaid图表代码  |
-| `config`      | `MermaidConfig`          | -                            | Mermaid配置选项  |
-| `id`          | `string`                 | 自动生成                     | 图表ID           |
-| `className`   | `string`                 | `'react-markdown-mermaid'`   | CSS类名          |
-| `style`       | `CSSProperties`          | -                            | 内联样式         |
-| `onLoad`      | `() => void`             | -                            | 加载完成回调     |
-| `onError`     | `(error: Error) => void` | -                            | 错误回调         |
-| `onRender`    | `() => void`             | -                            | 渲染完成回调     |
-| `showLoading` | `boolean`                | `true`                       | 是否显示加载状态 |
-| `loadingText` | `string`                 | `'Loading diagram...'`       | 加载文本         |
-| `errorText`   | `string`                 | `'Failed to render diagram'` | 错误文本         |
+| Property      | Type                     | Default                      | Description            |
+| ------------- | ------------------------ | ---------------------------- | ---------------------- |
+| `chart`       | `string`                 | -                            | Mermaid diagram code   |
+| `config`      | `MermaidConfig`          | -                            | Mermaid configuration  |
+| `id`          | `string`                 | auto-generated               | Diagram ID             |
+| `className`   | `string`                 | `'react-markdown-mermaid'`   | CSS class name         |
+| `style`       | `CSSProperties`          | -                            | Inline styles          |
+| `onLoad`      | `() => void`             | -                            | Callback when loaded   |
+| `onError`     | `(error: Error) => void` | -                            | Error callback         |
+| `onRender`    | `() => void`             | -                            | Callback when rendered |
+| `showLoading` | `boolean`                | `true`                       | Show loading state     |
+| `loadingText` | `string`                 | `'Loading diagram...'`       | Loading text           |
+| `errorText`   | `string`                 | `'Failed to render diagram'` | Error text             |
 
-#### 示例
+#### Example
 
 ```tsx
 import { Mermaid } from 'react-markdown-mermaid';
@@ -143,32 +138,32 @@ import { Mermaid } from 'react-markdown-mermaid';
     flowchart: { useMaxWidth: true },
   }}
   className="my-mermaid"
-  onLoad={() => console.log('图表加载完成')}
-  onError={(error) => console.error('渲染错误:', error)}
+  onLoad={() => console.log('Diagram loaded')}
+  onError={(error) => console.error('Render error:', error)}
 />;
 ```
 
-### MermaidBlock 组件
+### MermaidBlock Component
 
-专门为rehype插件设计的组件。
+Component designed for the rehype plugin.
 
 #### Props
 
-| 属性            | 类型                     | 默认值                       | 描述             |
-| --------------- | ------------------------ | ---------------------------- | ---------------- |
-| `code`          | `string`                 | -                            | Mermaid图表代码  |
-| `mermaidConfig` | `MermaidConfig`          | -                            | Mermaid配置      |
-| `id`            | `string`                 | 自动生成                     | 图表ID           |
-| `className`     | `string`                 | `'mermaid-block'`            | CSS类名          |
-| `style`         | `CSSProperties`          | -                            | 内联样式         |
-| `onLoad`        | `() => void`             | -                            | 加载完成回调     |
-| `onError`       | `(error: Error) => void` | -                            | 错误回调         |
-| `onRender`      | `() => void`             | -                            | 渲染完成回调     |
-| `showLoading`   | `boolean`                | `true`                       | 是否显示加载状态 |
-| `loadingText`   | `string`                 | `'Loading diagram...'`       | 加载文本         |
-| `errorText`     | `string`                 | `'Failed to render diagram'` | 错误文本         |
+| Property        | Type                     | Default                      | Description            |
+| --------------- | ------------------------ | ---------------------------- | ---------------------- |
+| `code`          | `string`                 | -                            | Mermaid diagram code   |
+| `mermaidConfig` | `MermaidConfig`          | -                            | Mermaid configuration  |
+| `id`            | `string`                 | auto-generated               | Diagram ID             |
+| `className`     | `string`                 | `'mermaid-block'`            | CSS class name         |
+| `style`         | `CSSProperties`          | -                            | Inline styles          |
+| `onLoad`        | `() => void`             | -                            | Callback when loaded   |
+| `onError`       | `(error: Error) => void` | -                            | Error callback         |
+| `onRender`      | `() => void`             | -                            | Callback when rendered |
+| `showLoading`   | `boolean`                | `true`                       | Show loading state     |
+| `loadingText`   | `string`                 | `'Loading diagram...'`       | Loading text           |
+| `errorText`     | `string`                 | `'Failed to render diagram'` | Error text             |
 
-#### 示例
+#### Example
 
 ```tsx
 import { MermaidBlock } from 'react-markdown-mermaid';
@@ -180,37 +175,37 @@ import { MermaidBlock } from 'react-markdown-mermaid';
     flowchart: { useMaxWidth: true },
   }}
   className="my-mermaid-block"
-  onLoad={() => console.log('图表加载完成')}
-  onError={(error) => console.error('渲染错误:', error)}
-  onRender={() => console.log('图表渲染完成')}
+  onLoad={() => console.log('Diagram loaded')}
+  onError={(error) => console.error('Render error:', error)}
+  onRender={() => console.log('Diagram rendered')}
   showLoading={true}
-  loadingText="正在渲染图表..."
-  errorText="图表渲染失败"
+  loadingText="Rendering diagram..."
+  errorText="Failed to render diagram"
 />;
 ```
 
-### rehypeMermaid 插件
+### rehypeMermaid Plugin
 
-用于在react-markdown中自动处理Mermaid代码块。
+Automatically handles Mermaid code blocks in `react-markdown`.
 
-#### 选项
+#### Options
 
-| 属性            | 类型  | 默认值 | 描述        |
-| --------------- | ----- | ------ | ----------- |
-| `mermaidConfig` | `any` | -      | Mermaid配置 |
+| Property        | Type  | Default | Description           |
+| --------------- | ----- | ------- | --------------------- |
+| `mermaidConfig` | `any` | -       | Mermaid configuration |
 
-## 🎨 样式定制
+## 🎨 Styling
 
-### 导入样式
+### Import styles
 
 ```tsx
 import 'react-markdown-mermaid/style.css';
 ```
 
-### 自定义样式
+### Customize styles
 
 ```css
-/* 自定义Mermaid组件样式 */
+/* Customize Mermaid component styles */
 .react-markdown-mermaid {
   border: 1px solid #e1e5e9;
   border-radius: 8px;
@@ -218,50 +213,50 @@ import 'react-markdown-mermaid/style.css';
   margin: 16px 0;
 }
 
-/* 加载状态样式 */
+/* Loading state */
 .react-markdown-mermaid.loading {
   background-color: #f8f9fa;
 }
 
-/* 错误状态样式 */
+/* Error state */
 .react-markdown-mermaid.error {
   background-color: #f8d7da;
   color: #721c24;
 }
 ```
 
-## 📊 支持的图表类型
+## 📊 Supported Diagram Types
 
-### 1. 流程图 (Flowchart)
+### 1. Flowchart
 
 ```mermaid
 graph TD
-  A[开始] --> B{判断}
-  B -->|是| C[处理]
-  B -->|否| D[结束]
+  A[Start] --> B{Decision}
+  B -->|Yes| C[Process]
+  B -->|No| D[End]
 ```
 
-### 2. 序列图 (Sequence Diagram)
+### 2. Sequence Diagram
 
 ```mermaid
 sequenceDiagram
-  participant 用户
-  participant 系统
-  用户->>系统: 请求
-  系统-->>用户: 响应
+  participant User
+  participant System
+  User->>System: Request
+  System-->>User: Response
 ```
 
-### 3. 甘特图 (Gantt Chart)
+### 3. Gantt Chart
 
 ```mermaid
 gantt
-  title 项目计划
-  section 设计
-  需求分析 :done, des1, 2024-01-01, 2024-01-10
-  系统设计 :active, des2, 2024-01-11, 2024-01-25
+  title Project Plan
+  section Design
+  Requirements Analysis :done, des1, 2024-01-01, 2024-01-10
+  System Design :active, des2, 2024-01-11, 2024-01-25
 ```
 
-### 4. 类图 (Class Diagram)
+### 4. Class Diagram
 
 ```mermaid
 classDiagram
@@ -276,32 +271,32 @@ classDiagram
   Animal <|-- Dog
 ```
 
-### 5. 饼图 (Pie Chart)
+### 5. Pie Chart
 
 ```mermaid
-pie title 浏览器市场份额
+pie title Browser Market Share
   "Chrome" : 65.5
   "Firefox" : 15.2
   "Safari" : 12.3
 ```
 
-### 6. 状态图 (State Diagram)
+### 6. State Diagram
 
 ```mermaid
 stateDiagram-v2
-  [*] --> 待机
-  待机 --> 运行 : 启动
-  运行 --> 暂停 : 暂停
-  暂停 --> 运行 : 恢复
+  [*] --> Idle
+  Idle --> Running : Start
+  Running --> Paused : Pause
+  Paused --> Running : Resume
 ```
 
-## 🔧 高级配置
+## 🔧 Advanced Configuration
 
-### Mermaid 配置
+### Mermaid Configuration
 
 ```tsx
 const mermaidConfig = {
-  theme: 'default', // 或 'dark', 'forest', 'neutral'
+  theme: 'default', // or 'dark', 'forest', 'neutral'
   flowchart: {
     useMaxWidth: true,
     htmlLabels: true,
@@ -317,22 +312,22 @@ const mermaidConfig = {
 };
 ```
 
-### 错误处理
+### Error Handling
 
 ```tsx
 <Mermaid
   chart={chartCode}
   onError={(error) => {
-    console.error('Mermaid渲染错误:', error);
-    // 显示友好的错误信息
+    console.error('Mermaid render error:', error);
+    // Show a friendly error message
   }}
-  errorText="图表渲染失败，请检查语法"
+  errorText="Failed to render diagram, please check the syntax"
 />
 ```
 
-## 📝 完整示例
+## 📝 Full Examples
 
-### 1. 基本示例
+### 1. Basic Example
 
 ```tsx
 import React from 'react';
@@ -342,40 +337,40 @@ import 'react-markdown-mermaid/style.css';
 const BasicExample = () => {
   const flowchart = `
     graph TD
-      A[开始] --> B{判断条件}
-      B -->|是| C[处理A]
-      B -->|否| D[处理B]
-      C --> E[结束]
+      A[Start] --> B{Condition}
+      B -->|Yes| C[Handle A]
+      B -->|No| D[Handle B]
+      C --> E[End]
       D --> E
   `;
 
   const sequenceDiagram = `
     sequenceDiagram
-      participant 用户
-      participant 系统
-      participant 数据库
+      participant User
+      participant System
+      participant Database
       
-      用户->>系统: 登录请求
-      系统->>数据库: 验证用户
-      数据库-->>系统: 返回结果
-      系统-->>用户: 登录响应
+      User->>System: Login request
+      System->>Database: Verify user
+      Database-->>System: Return result
+      System-->>User: Login response
   `;
 
   return (
     <div>
-      <h2>流程图</h2>
+      <h2>Flowchart</h2>
       <Mermaid chart={flowchart} />
 
-      <h2>序列图</h2>
+      <h2>Sequence Diagram</h2>
       <Mermaid chart={sequenceDiagram} />
     </div>
   );
 };
 ```
 
-### 2. Markdown 集成示例
+### 2. Markdown Integration Example
 
-```tsx
+````tsx
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -384,108 +379,109 @@ import 'react-markdown-mermaid/style.css';
 
 const MarkdownExample = () => {
   const markdown = `
-# 项目文档
+# Project Documentation
 
-## 系统架构
+## System Architecture
 
-\`\`\`mermaid
+```mermaid
 graph TD
-  A[前端] --> B[API网关]
-  B --> C[用户服务]
-  B --> D[订单服务]
-  C --> E[数据库]
+  A[Frontend] --> B[API Gateway]
+  B --> C[User Service]
+  B --> D[Order Service]
+  C --> E[Database]
   D --> E
-\`\`\`
+````
 
-## 用户登录流程
+## User Login Flow
 
-\`\`\`mermaid
+```mermaid
 sequenceDiagram
-  participant U as 用户
-  participant F as 前端
+  participant U as User
+  participant F as Frontend
   participant A as API
-  participant D as 数据库
-  
-  U->>F: 输入用户名密码
-  F->>A: 发送登录请求
-  A->>D: 查询用户信息
-  D-->>A: 返回用户数据
-  A-->>F: 返回登录结果
-  F-->>U: 显示登录状态
-\`\`\`
+  participant D as Database
 
-## 项目进度
-
-\`\`\`mermaid
-gantt
-  title 项目开发计划
-  dateFormat YYYY-MM-DD
-  section 设计阶段
-  需求分析    :done, des1, 2024-01-01, 2024-01-10
-  系统设计    :active, des2, 2024-01-11, 2024-01-25
-  section 开发阶段
-  编码实现    :dev1, 2024-01-26, 2024-02-15
-  测试调试    :dev2, 2024-02-16, 2024-02-28
-\`\`\`
-  `;
-
-  return (
-    <ReactMarkdown
-      remarkPlugins={[remarkGfm]}
-      rehypePlugins={[
-        [
-          rehypeMermaid,
-          {
-            mermaidConfig: {
-              theme: 'default',
-              flowchart: { useMaxWidth: true },
-              sequence: { useMaxWidth: true },
-              gantt: { useMaxWidth: true },
-            },
-          },
-        ],
-      ]}
-      components={{
-        MermaidBlock: MermaidBlock,
-      }}
-    >
-      {markdown}
-    </ReactMarkdown>
-  );
-};
+  U->>F: Enter credentials
+  F->>A: Send login request
+  A->>D: Query user info
+  D-->>A: Return user data
+  A-->>F: Return login result
+  F-->>U: Show login status
 ```
 
-## 🤝 贡献
+## Project Timeline
 
-欢迎提交 Issue 和 Pull Request！
+```mermaid
+gantt
+  title Project Development Plan
+  dateFormat YYYY-MM-DD
+  section Design Phase
+  Requirements Analysis    :done, des1, 2024-01-01, 2024-01-10
+  System Design            :active, des2, 2024-01-11, 2024-01-25
+  section Development Phase
+  Implementation           :dev1, 2024-01-26, 2024-02-15
+  Testing & Debugging      :dev2, 2024-02-16, 2024-02-28
+```
 
-### 开发环境设置
+`;
+
+return (
+<ReactMarkdown
+remarkPlugins={[remarkGfm]}
+rehypePlugins={[
+[
+rehypeMermaid,
+{
+mermaidConfig: {
+theme: 'default',
+flowchart: { useMaxWidth: true },
+sequence: { useMaxWidth: true },
+gantt: { useMaxWidth: true },
+},
+},
+],
+]}
+components={{
+        MermaidBlock: MermaidBlock,
+      }} >
+{markdown}
+</ReactMarkdown>
+);
+};
+
+````
+
+## 🤝 Contributing
+
+Contributions via Issues and Pull Requests are welcome!
+
+### Development Setup
 
 ```bash
-# 克隆仓库
+# Clone the repository
 git clone https://github.com/your-username/react-markdown-mermaid.git
 cd react-markdown-mermaid
 
-# 安装依赖
+# Install dependencies
 npm install
 
-# 启动开发服务器
+# Start the dev server
 npm run dev
 
-# 构建库
+# Build the library
 npm run build
-```
+````
 
-## 📄 许可证
+## 📄 License
 
 MIT License
 
-## 🔗 相关链接
+## 🔗 Related Links
 
-- [Mermaid 官方文档](https://mermaid.js.org/)
+- [Mermaid Official Docs](https://mermaid.js.org/)
 - [React Markdown](https://github.com/remarkjs/react-markdown)
 - [Rehype](https://github.com/rehypejs/rehype)
 
 ---
 
-如果这个库对你有帮助，请给它一个 ⭐️！
+If this library is helpful, please give it a ⭐️!
