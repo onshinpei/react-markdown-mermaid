@@ -1,13 +1,15 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { MermaidConfig } from 'mermaid';
 import MermaidService from './mermaidService';
 import { MermaidProps } from './types';
+
+// 获取 mermaid 服务实例
+const mermaidService = MermaidService.getInstance();
 
 const MermaidBlock: React.FC<MermaidProps> = ({
   code,
   mermaidConfig,
   id,
-  className = 'mermaid-block',
+  className,
   style,
   onLoad,
   onError,
@@ -23,9 +25,6 @@ const MermaidBlock: React.FC<MermaidProps> = ({
 
   // 生成唯一ID
   const chartId = useMemo(() => id || `mermaid-${Math.random().toString(36).substr(2, 9)}`, [id]);
-
-  // 获取 mermaid 服务实例
-  const mermaidService = MermaidService.getInstance();
 
   useEffect(() => {
     const initMermaid = async () => {
@@ -74,7 +73,7 @@ const MermaidBlock: React.FC<MermaidProps> = ({
   // 加载状态
   if (isLoading && showLoading) {
     return (
-      <div className={`${className} loading`} style={style}>
+      <div className={`react-markdown-mermaid ${className} loading`} style={style}>
         <div className="loading-spinner">
           <div className="spinner"></div>
           <span>{loadingText}</span>
@@ -86,7 +85,7 @@ const MermaidBlock: React.FC<MermaidProps> = ({
   // 错误状态
   if (error) {
     return (
-      <div className={`${className} error`} style={style}>
+      <div className={`react-markdown-mermaid ${className} error`} style={style}>
         <div className="error-message">
           <span>{errorText}</span>
           <details>{error}</details>
@@ -97,7 +96,7 @@ const MermaidBlock: React.FC<MermaidProps> = ({
 
   // 正常渲染
   return (
-    <div className={className} style={style}>
+    <div className={`react-markdown-mermaid ${className}`} style={style}>
       <div ref={containerRef} id={chartId} dangerouslySetInnerHTML={{ __html: svg }} />
     </div>
   );
