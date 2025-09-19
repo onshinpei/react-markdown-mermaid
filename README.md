@@ -24,32 +24,7 @@ pnpm add react-markdown-mermaid
 
 ## 🚀 快速开始
 
-### 1. 基本用法 - 独立组件
-
-```tsx
-import React from 'react';
-import { Mermaid } from 'react-markdown-mermaid';
-
-const App = () => {
-  const chart = `
-    graph TD
-      A[开始] --> B{判断条件}
-      B -->|是| C[处理A]
-      B -->|否| D[处理B]
-      C --> E[结束]
-      D --> E
-  `;
-
-  return (
-    <div>
-      <h1>流程图示例</h1>
-      <Mermaid chart={chart} />
-    </div>
-  );
-};
-```
-
-### 2. 与 react-markdown 集成
+### 1. 与 react-markdown 集成
 
 ```tsx
 import React from 'react';
@@ -105,6 +80,31 @@ sequenceDiagram
     >
       {markdown}
     </ReactMarkdown>
+  );
+};
+```
+
+### 2. 基本用法 - 独立组件
+
+```tsx
+import React from 'react';
+import { Mermaid } from 'react-markdown-mermaid';
+
+const App = () => {
+  const chart = `
+    graph TD
+      A[开始] --> B{判断条件}
+      B -->|是| C[处理A]
+      B -->|否| D[处理B]
+      C --> E[结束]
+      D --> E
+  `;
+
+  return (
+    <div>
+      <h1>流程图示例</h1>
+      <Mermaid chart={chart} />
+    </div>
   );
 };
 ```

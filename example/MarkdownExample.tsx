@@ -140,18 +140,15 @@ function hello() {
     },
   };
 
+  const components = {
+    MermaidBlock: MermaidBlock,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } as any;
+
   return (
     <div className="markdown-example">
       <div className="markdown-container">
-        <ReactMarkdown
-          remarkPlugins={[remarkGfm]}
-          rehypePlugins={[[rehypeMermaid, { mermaidConfig, ssr: false }]]}
-          components={
-            {
-              MermaidBlock: MermaidBlock,
-            } as any
-          }
-        >
+        <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[[rehypeMermaid, { mermaidConfig, ssr: false }]]} components={components}>
           {markdownContent}
         </ReactMarkdown>
       </div>
