@@ -26,6 +26,7 @@ type MarkdownExampleProps = {
 
 const MarkdownExample: React.FC<MarkdownExampleProps> = ({ lang }) => {
   const [data, setData] = useState<MarkdownExampleData | null>(null);
+  const [selectedExample, setSelectedExample] = useState<string>('flowchart');
 
   useEffect(() => {
     let cancelled = false;
@@ -47,29 +48,6 @@ const MarkdownExample: React.FC<MarkdownExampleProps> = ({ lang }) => {
     };
   }, [lang]);
 
-  const markdownContent = useMemo(() => {
-    if (!data) return '';
-
-    const { title, description, sections } = data;
-
-    const mermaidSections = [
-      { key: 'flowchart', section: sections.flowchart },
-      { key: 'sequence', section: sections.sequence },
-      { key: 'gantt', section: sections.gantt },
-      { key: 'class', section: sections.class },
-      { key: 'pie', section: sections.pie },
-      { key: 'state', section: sections.state },
-    ];
-
-    const mermaidMarkdown = mermaidSections.map(({ section }) => `## ${section.title}\n\n\`\`\`mermaid\n${section.code}\n\`\`\``).join('\n\n');
-
-    const listMarkdown = `## ${sections.list.title}\n\n${sections.list.items.map((item) => `- ${item}`).join('\n')}`;
-
-    const tableMarkdown = `## ${sections.table.title}\n\n| ${sections.table.headers.join(' | ')} |\n|${sections.table.headers.map(() => '------').join('|')}|\n${sections.table.rows.map((row) => `| ${row.join(' | ')} |`).join('\n')}`;
-
-    return `# ${title}\n\n${description}\n\n${mermaidMarkdown}\n\n## ${sections.code.title}\n\n${sections.code.description}\n\n\`\`\`javascript\n${sections.code.code}\n\`\`\`\n\n${listMarkdown}\n\n${tableMarkdown}\n\n## ${sections.summary.title}\n\n${sections.summary.content}`;
-  }, [data]);
-
   // 配置mermaid
   const mermaidConfig = {
     theme: 'default',
@@ -87,17 +65,134 @@ const MarkdownExample: React.FC<MarkdownExampleProps> = ({ lang }) => {
     },
   };
 
-  const components = {
-    MermaidBlock: MermaidBlock,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } as any;
+  const examples = useMemo(() => {
+    if (!data) return [];
+
+    return [
+      { key: 'flowchart', section: data.sections.flowchart },
+      { key: 'sequence', section: data.sections.sequence },
+      { key: 'gantt', section: data.sections.gantt },
+      { key: 'class', section: data.sections.class },
+      { key: 'pie', section: data.sections.pie },
+      { key: 'state', section: data.sections.state },
+    ];
+  }, [data]);
+
+  const currentExample = examples.find((ex) => ex.key === selectedExample);
+
+  const renderCodeBlock = (code: string, language: string = 'mermaid') => {
+    return (
+      <pre className="code-block">
+        <code className={`language-${language}`}>{code}</code>
+      </pre>
+    );
+  };
+
+  const renderReactCode = (example: { key: string; section: { title: string; code: string } }) => {
+    const reactCode = `import React from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import { rehypeMermaid } from 'react-markdown-mermaid';
+
+const ${example.section.title.replace(/示例|图/g, '')}Example = () => {
+  const mermaidConfig = {
+    theme: 'default',
+    flowchart: {
+      useMaxWidth: true,
+      htmlLabels: true,
+    },
+    sequence: {
+      useMaxWidth: true,
+      diagramMarginX: 50,
+      diagramMarginY: 10,
+    },
+    gantt: {
+      useMaxWidth: true,
+    },
+  };
+
+  const markdownContent = \`# ${example.section.title}
+
+\`\`\`mermaid
+${example.section.code}
+\`\`\`
+\`;
 
   return (
-    <div className="markdown-example">
-      <div className="markdown-container">
-        <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[[rehypeMermaid, { mermaidConfig, ssr: false }]]} components={components}>
-          {markdownContent}
-        </ReactMarkdown>
+    <div className="markdown-container">
+      <ReactMarkdown 
+        remarkPlugins={[remarkGfm]} 
+        rehypePlugins={[[rehypeMermaid, { mermaidConfig, ssr: false }]]}
+      >
+        {markdownContent}
+      </ReactMarkdown>
+    </div>
+  );
+};
+
+export default ${example.section.title.replace(/示例|图/g, '')}Example;`;
+
+    return (
+      <div className="react-code-section">
+        <h4>React 使用代码</h4>
+        {renderCodeBlock(reactCode, 'javascript')}
+      </div>
+    );
+  };
+
+  const renderMermaidExample = (example: { key: string; section: { title: string; code: string } }) => {
+    const markdownContent = `
+\`\`\`mermaid
+${example.section.code}
+\`\`\`
+`;
+
+    const components = {
+      MermaidBlock: MermaidBlock,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any;
+
+    return (
+      <div className="mermaid-example">
+        <div className="mermaid-container">
+          <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[[rehypeMermaid, { mermaidConfig, ssr: false }]]} components={components}>
+            {markdownContent}
+          </ReactMarkdown>
+        </div>
+      </div>
+    );
+  };
+
+  if (!data) {
+    return <div className="loading">加载中...</div>;
+  }
+
+  return (
+    <div className="markdown-example-layout">
+      <div className="example-content">
+        {/* 左侧：代码区域 */}
+        <div className="code-panel">
+          <div className="panel-header">
+            <div className="example-tabs">
+              {examples.map((example) => (
+                <button key={example.key} className={`tab ${selectedExample === example.key ? 'active' : ''}`} onClick={() => setSelectedExample(example.key)}>
+                  {example.section.title}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="code-content">{currentExample && <>{renderReactCode(currentExample)}</>}</div>
+        </div>
+
+        {/* 右侧：效果图区域 */}
+        <div className="preview-panel">
+          <div className="panel-header">
+            <h3>渲染效果</h3>
+          </div>
+
+          <div className="preview-content">{currentExample && renderMermaidExample(currentExample)}</div>
+        </div>
       </div>
     </div>
   );
