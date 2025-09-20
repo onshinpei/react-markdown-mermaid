@@ -485,3 +485,5 @@ MIT License
 ---
 
 If this library is helpful, please give it a ⭐️!
+
+[![Visitors](https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2Fonshinpei%2Freact-markddown-mermaid&label=Visitors&countColor=%23263759&style=flat)](https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2Fonshinpei%2Freact-markddown-mermaid)
