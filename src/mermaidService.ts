@@ -62,6 +62,10 @@ class MermaidService {
     return mermaid.render(id, chart);
   }
 
+  public async parse(code: string) {
+    return await mermaid.parse(code);
+  }
+
   /**
    * 检查是否已初始化
    * @returns boolean
@@ -83,21 +87,21 @@ export default MermaidService;
 
 /**
  * 使用示例：
- * 
+ *
  * // 获取服务实例
  * const mermaidService = MermaidService.getInstance();
- * 
+ *
  * // 初始化（可选配置）
  * await mermaidService.initialize({
  *   theme: 'dark',
  *   startOnLoad: false
  * });
- * 
+ *
  * // 渲染图表
  * const { svg } = await mermaidService.render('chart-id', 'graph TD; A-->B');
- * 
+ *
  * // 检查是否已初始化
  * if (mermaidService.isReady()) {
  *   // 可以安全地渲染图表
  * }
- */ 
+ */

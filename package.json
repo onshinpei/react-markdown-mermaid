@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "mermaid": "^10.6.1",
+    "rehype-parse": "^9.0.1",
     "unified": "^11.0.0",
     "unist-util-visit": "^5.0.0"
   },
