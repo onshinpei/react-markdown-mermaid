@@ -20,12 +20,20 @@ type MarkdownExampleData = {
   };
 };
 
+type LabelsData = {
+  codeExample: string;
+  renderEffect: string;
+  mermaidCode: string;
+  reactUsageCode: string;
+};
+
 type MarkdownExampleProps = {
   lang: 'zh' | 'en';
 };
 
 const MarkdownExample: React.FC<MarkdownExampleProps> = ({ lang }) => {
   const [data, setData] = useState<MarkdownExampleData | null>(null);
+  const [labels, setLabels] = useState<LabelsData | null>(null);
   const [selectedExample, setSelectedExample] = useState<string>('flowchart');
 
   useEffect(() => {
@@ -34,12 +42,17 @@ const MarkdownExample: React.FC<MarkdownExampleProps> = ({ lang }) => {
       try {
         const mod = await (lang === 'zh' ? import('./data/zh.json') : import('./data/en.json'));
         if (!cancelled) {
-          setData((mod as { default?: { markdownExample: MarkdownExampleData } }).default?.markdownExample ?? (mod as unknown as { markdownExample: MarkdownExampleData }).markdownExample);
+          const data = (mod as { default?: { markdownExample: MarkdownExampleData; labels: LabelsData } }).default ?? (mod as unknown as { markdownExample: MarkdownExampleData; labels: LabelsData });
+          setData(data.markdownExample);
+          setLabels(data.labels);
         }
       } catch (e) {
         // eslint-disable-next-line no-console
         console.error('Failed to load markdown example data', e);
-        if (!cancelled) setData(null);
+        if (!cancelled) {
+          setData(null);
+          setLabels(null);
+        }
       }
     };
     load();
@@ -89,6 +102,7 @@ const MarkdownExample: React.FC<MarkdownExampleProps> = ({ lang }) => {
   };
 
   const renderReactCode = (example: { key: string; section: { title: string; code: string } }) => {
+    if (!labels) return null;
     const reactCode = `import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -132,12 +146,7 @@ ${example.section.code}
 
 export default ${example.section.title.replace(/示例|图/g, '')}Example;`;
 
-    return (
-      <div className="react-code-section">
-        <h4>React 使用代码</h4>
-        {renderCodeBlock(reactCode, 'javascript')}
-      </div>
-    );
+    return <div className="react-code-section">{renderCodeBlock(reactCode, 'javascript')}</div>;
   };
 
   const renderMermaidExample = (example: { key: string; section: { title: string; code: string } }) => {
@@ -163,7 +172,7 @@ ${example.section.code}
     );
   };
 
-  if (!data) {
+  if (!data || !labels) {
     return <div className="loading">加载中...</div>;
   }
 
@@ -188,7 +197,7 @@ ${example.section.code}
         {/* 右侧：效果图区域 */}
         <div className="preview-panel">
           <div className="panel-header">
-            <h3>渲染效果</h3>
+            <h3>{labels.renderEffect}</h3>
           </div>
 
           <div className="preview-content">{currentExample && renderMermaidExample(currentExample)}</div>

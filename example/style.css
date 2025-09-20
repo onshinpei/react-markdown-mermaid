@@ -130,15 +130,16 @@ body {
 
 .code-block {
   margin: 0.5rem 0 0 0;
-  padding: 1.5rem;
-  border-radius: 12px;
+  padding: 0;
+  border-radius: 16px;
   font-family: 'Fira Code', 'Monaco', 'Consolas', 'Courier New', monospace;
   font-size: 0.9rem;
-  overflow-x: auto;
-  border: 1px solid #3a3a3a;
+  overflow: hidden;
+  border: 1px solid #e1e5e9;
   position: relative;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
   line-height: 1.6;
+  background: #ffffff;
 }
 
 .code-block::before {
@@ -147,32 +148,50 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  height: 3px;
+  height: 4px;
   background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
   background-size: 200% 100%;
   animation: shimmer 3s ease-in-out infinite;
-  border-radius: 12px 12px 0 0;
+  z-index: 1;
+}
+
+.code-block::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+  z-index: 0;
 }
 
 .code-block code {
-  padding: 0;
+  padding: 1.5rem;
   border-radius: 0;
   font-size: inherit;
   font-family: inherit;
   line-height: inherit;
+  color: #2d3748;
+  background: none;
+  position: relative;
+  z-index: 2;
+  display: block;
+  white-space: pre;
+  overflow-x: auto;
 }
 
-/* 语法高亮样式 */
+/* 语法高亮样式 - 现代化配色 */
 .code-block .token.comment,
 .code-block .token.prolog,
 .code-block .token.doctype,
 .code-block .token.cdata {
-  color: #6a9955;
+  color: #6b7280;
   font-style: italic;
 }
 
 .code-block .token.punctuation {
-  color: #d4d4d4;
+  color: #374151;
 }
 
 .code-block .token.property,
@@ -182,7 +201,7 @@ body {
 .code-block .token.constant,
 .code-block .token.symbol,
 .code-block .token.deleted {
-  color: #b5cea8;
+  color: #059669;
 }
 
 .code-block .token.selector,
@@ -191,7 +210,7 @@ body {
 .code-block .token.char,
 .code-block .token.builtin,
 .code-block .token.inserted {
-  color: #ce9178;
+  color: #dc2626;
 }
 
 .code-block .token.operator,
@@ -199,24 +218,47 @@ body {
 .code-block .token.url,
 .code-block .language-css .token.string,
 .code-block .style .token.string {
-  color: #d4d4d4;
+  color: #374151;
 }
 
 .code-block .token.atrule,
 .code-block .token.attr-value,
 .code-block .token.keyword {
-  color: #569cd6;
+  color: #7c3aed;
+  font-weight: 600;
 }
 
 .code-block .token.function,
 .code-block .token.class-name {
-  color: #dcdcaa;
+  color: #2563eb;
+  font-weight: 600;
 }
 
 .code-block .token.regex,
 .code-block .token.important,
 .code-block .token.variable {
-  color: #d16969;
+  color: #ea580c;
+}
+
+/* 特殊语法高亮 */
+.code-block .token.import {
+  color: #7c3aed;
+  font-weight: 600;
+}
+
+.code-block .token.export {
+  color: #7c3aed;
+  font-weight: 600;
+}
+
+.code-block .token.const {
+  color: #7c3aed;
+  font-weight: 600;
+}
+
+.code-block .token.return {
+  color: #7c3aed;
+  font-weight: 600;
 }
 
 .app-footer {
@@ -299,20 +341,21 @@ body {
 }
 
 .example-content {
-  display: flex;
+  display: grid;
   min-height: 700px;
+  grid-template-columns: 1fr 1fr;
   background: white;
   align-items: stretch; /* 确保两个面板高度一致 */
 }
 
 .code-panel {
-  flex: 1;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border-right: 2px solid #dee2e6;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-right: 3px solid #e2e8f0;
   display: flex;
   flex-direction: column;
   position: relative;
-  min-height: 100%; /* 确保最小高度为100% */
+  min-height: 100%;
+  box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.1);
 }
 
 .code-panel::before {
@@ -320,42 +363,32 @@ body {
   position: absolute;
   top: 0;
   right: 0;
-  width: 2px;
+  width: 3px;
   height: 100%;
-  background: linear-gradient(to bottom, #667eea, #764ba2);
+  background: linear-gradient(to bottom, #667eea, #764ba2, #667eea);
+  background-size: 100% 200%;
+  animation: shimmer 4s ease-in-out infinite;
 }
 
 .preview-panel {
-  flex: 1;
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
   display: flex;
   flex-direction: column;
   position: relative;
-  min-height: 100%; /* 确保最小高度为100% */
+  min-height: 100%;
+  box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.1);
 }
 
 .panel-header {
-  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
   color: white;
-  padding: 1.5rem 2rem;
-  border-bottom: 3px solid #667eea;
+  padding: 0rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: relative;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.panel-header::after {
-  content: '';
-  position: absolute;
-  bottom: -3px;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
-  background-size: 200% 100%;
-  animation: shimmer 3s ease-in-out infinite;
+  height: 70px;
+  backdrop-filter: blur(10px);
 }
 
 @keyframes shimmer {
@@ -369,30 +402,38 @@ body {
 
 .panel-header h3 {
   margin: 0;
-  font-size: 1.3rem;
-  font-weight: 700;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font-size: 1.4rem;
+  font-weight: 800;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 2;
+  letter-spacing: 0.5px;
 }
 
 .example-tabs {
   display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+  position: relative;
+  z-index: 2;
+  overflow-x: auto;
 }
 
 .example-tabs .tab {
-  padding: 0.6rem 1.2rem;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  border-radius: 25px;
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(15px);
   position: relative;
   overflow: hidden;
+  white-space: nowrap;
+  letter-spacing: 0.3px;
 }
 
 .example-tabs .tab::before {
@@ -402,8 +443,8 @@ body {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transition: left 0.6s ease;
 }
 
 .example-tabs .tab:hover::before {
@@ -411,18 +452,20 @@ body {
 }
 
 .example-tabs .tab:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.4);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  color: white;
 }
 
 .example-tabs .tab.active {
   background: linear-gradient(135deg, #667eea, #764ba2);
   color: white;
   border-color: #667eea;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 25px rgba(102, 126, 234, 0.5);
+  font-weight: 700;
 }
 
 .code-content {
@@ -464,25 +507,10 @@ body {
 }
 
 .react-code-section {
-  margin-top: 2.5rem;
-  padding-top: 2rem;
-  border-top: 2px solid #e9ecef;
   position: relative;
   flex: 1;
   display: flex;
   flex-direction: column;
-}
-
-.react-code-section::before {
-  content: '';
-  position: absolute;
-  top: -1px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
-  background-size: 200% 100%;
-  animation: shimmer 3s ease-in-out infinite;
 }
 
 .react-code-section h4 {
@@ -858,6 +886,7 @@ body {
     justify-content: flex-start;
     overflow-x: auto;
     padding-bottom: 0.5rem;
+    flex-wrap: nowrap;
   }
 
   .example-tabs .tab {

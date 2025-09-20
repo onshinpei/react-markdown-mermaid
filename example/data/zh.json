@@ -10,7 +10,11 @@
     "github": "GitHub",
     "mermaidDocs": "Mermaid 文档",
     "markdownExampleTitle": "React-Markdown + rehypeMermaid 示例",
-    "markdownExampleDescription": "这个示例展示了如何在 react-markdown 中使用 rehypeMermaid 插件来渲染 Mermaid 图表。"
+    "markdownExampleDescription": "这个示例展示了如何在 react-markdown 中使用 rehypeMermaid 插件来渲染 Mermaid 图表。",
+    "codeExample": "代码示例",
+    "renderEffect": "渲染效果",
+    "mermaidCode": "Mermaid 代码",
+    "reactUsageCode": "React 使用代码"
   },
   "examples": {
     "flowchart": {

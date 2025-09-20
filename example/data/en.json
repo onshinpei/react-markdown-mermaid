@@ -10,7 +10,11 @@
     "github": "GitHub",
     "mermaidDocs": "Mermaid Docs",
     "markdownExampleTitle": "React-Markdown + rehypeMermaid Example",
-    "markdownExampleDescription": "This example demonstrates how to use the rehypeMermaid plugin in react-markdown to render Mermaid diagrams."
+    "markdownExampleDescription": "This example demonstrates how to use the rehypeMermaid plugin in react-markdown to render Mermaid diagrams.",
+    "codeExample": "Code Example",
+    "renderEffect": "Render Effect",
+    "mermaidCode": "Mermaid Code",
+    "reactUsageCode": "React Usage Code"
   },
   "examples": {
     "flowchart": {
