@@ -1,127 +1,74 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { rehypeMermaid, MermaidBlock } from '../src/index';
 
-const MarkdownExample: React.FC = () => {
-  const markdownContent = `
-# React Mermaid + React-Markdown 示例
+type MarkdownExampleData = {
+  title: string;
+  description: string;
+  sections: {
+    flowchart: { title: string; code: string };
+    sequence: { title: string; code: string };
+    gantt: { title: string; code: string };
+    class: { title: string; code: string };
+    pie: { title: string; code: string };
+    state: { title: string; code: string };
+    code: { title: string; description: string; code: string };
+    list: { title: string; items: string[] };
+    table: { title: string; headers: string[]; rows: string[][] };
+    summary: { title: string; content: string };
+  };
+};
 
-这是一个使用 react-markdown 和 rehypeMermaid 插件的完整示例。
+type MarkdownExampleProps = {
+  lang: 'zh' | 'en';
+};
 
-## 流程图示例
+const MarkdownExample: React.FC<MarkdownExampleProps> = ({ lang }) => {
+  const [data, setData] = useState<MarkdownExampleData | null>(null);
 
-\`\`\`mermaid
-graph TD
-    A[开始] --> B{判断条件}
-    B -->|是| C[处理A]
-    B -->|否| D[处理B]
-    C --> E[结束]
-    D --> E
-\`\`\`
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      try {
+        const mod = await (lang === 'zh' ? import('./data/zh.json') : import('./data/en.json'));
+        if (!cancelled) {
+          setData((mod as { default?: { markdownExample: MarkdownExampleData } }).default?.markdownExample ?? (mod as unknown as { markdownExample: MarkdownExampleData }).markdownExample);
+        }
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.error('Failed to load markdown example data', e);
+        if (!cancelled) setData(null);
+      }
+    };
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, [lang]);
 
-## 序列图示例
+  const markdownContent = useMemo(() => {
+    if (!data) return '';
 
-\`\`\`mermaid
-sequenceDiagram
-    participant 用户
-    participant 系统
-    participant 数据库
-    
-    用户->>系统: 登录请求
-    系统->>数据库: 验证用户
-    数据库-->>系统: 返回结果
-    系统-->>用户: 登录响应
-\`\`\`
+    const { title, description, sections } = data;
 
-## 甘特图示例
+    const mermaidSections = [
+      { key: 'flowchart', section: sections.flowchart },
+      { key: 'sequence', section: sections.sequence },
+      { key: 'gantt', section: sections.gantt },
+      { key: 'class', section: sections.class },
+      { key: 'pie', section: sections.pie },
+      { key: 'state', section: sections.state },
+    ];
 
-\`\`\`mermaid
-gantt
-    title 项目计划
-    dateFormat  YYYY-MM-DD
-    section 设计
-    需求分析    :done, des1, 2024-01-01, 2024-01-10
-    系统设计    :active, des2, 2024-01-11, 2024-01-25
-    section 开发
-    编码实现    :des3, 2024-01-26, 2024-02-15
-    测试调试    :des4, 2024-02-16, 2024-02-28
-\`\`\`
+    const mermaidMarkdown = mermaidSections.map(({ section }) => `## ${section.title}\n\n\`\`\`mermaid\n${section.code}\n\`\`\``).join('\n\n');
 
-## 类图示例
+    const listMarkdown = `## ${sections.list.title}\n\n${sections.list.items.map((item) => `- ${item}`).join('\n')}`;
 
-\`\`\`mermaid
-classDiagram
-    class Animal {
-        +String name
-        +int age
-        +makeSound()
-    }
-    class Dog {
-        +bark()
-    }
-    class Cat {
-        +meow()
-    }
-    Animal <|-- Dog
-    Animal <|-- Cat
-\`\`\`
+    const tableMarkdown = `## ${sections.table.title}\n\n| ${sections.table.headers.join(' | ')} |\n|${sections.table.headers.map(() => '------').join('|')}|\n${sections.table.rows.map((row) => `| ${row.join(' | ')} |`).join('\n')}`;
 
-## 饼图示例
-
-\`\`\`mermaid
-pie title 浏览器市场份额
-    "Chrome" : 65.5
-    "Firefox" : 15.2
-    "Safari" : 12.3
-    "Edge" : 7.0
-\`\`\`
-
-## 状态图示例
-
-\`\`\`mermaid
-stateDiagram-v2
-    [*] --> 待机
-    待机 --> 运行 : 启动
-    运行 --> 暂停 : 暂停
-    暂停 --> 运行 : 恢复
-    运行 --> 待机 : 停止
-    暂停 --> 待机 : 停止
-\`\`\`
-
-## 代码示例
-
-这里是一个普通的代码块：
-
-\`\`\`javascript
-function hello() {
-  console.log('Hello, World!');
-}
-\`\`\`
-
-## 列表示例
-
-- 项目 1
-- 项目 2
-  - 子项目 2.1
-  - 子项目 2.2
-- 项目 3
-
-## 表格示例
-
-| 功能 | 状态 | 描述 |
-|------|------|------|
-| 流程图 | ✅ | 支持 |
-| 序列图 | ✅ | 支持 |
-| 甘特图 | ✅ | 支持 |
-| 类图 | ✅ | 支持 |
-| 饼图 | ✅ | 支持 |
-| 状态图 | ✅ | 支持 |
-
-## 总结
-
-这个示例展示了如何在 react-markdown 中使用 rehypeMermaid 插件来渲染 Mermaid 图表。插件会自动识别 markdown 中的 \`\`\`mermaid 代码块并将其转换为 MermaidBlock 组件。
-  `;
+    return `# ${title}\n\n${description}\n\n${mermaidMarkdown}\n\n## ${sections.code.title}\n\n${sections.code.description}\n\n\`\`\`javascript\n${sections.code.code}\n\`\`\`\n\n${listMarkdown}\n\n${tableMarkdown}\n\n## ${sections.summary.title}\n\n${sections.summary.content}`;
+  }, [data]);
 
   // 配置mermaid
   const mermaidConfig = {
