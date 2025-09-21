@@ -142,30 +142,6 @@ body {
   background: #ffffff;
 }
 
-.code-block::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
-  background-size: 200% 100%;
-  animation: shimmer 3s ease-in-out infinite;
-  z-index: 1;
-}
-
-.code-block::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
-  z-index: 0;
-}
-
 .code-block code {
   padding: 1.5rem;
   border-radius: 0;
@@ -343,31 +319,19 @@ body {
 .example-content {
   display: grid;
   min-height: 700px;
-  grid-template-columns: 1fr 1fr;
+  grid: repeat(2, 1fr) / 1fr 1fr;
   background: white;
   align-items: stretch; /* 确保两个面板高度一致 */
 }
 
 .code-panel {
   background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  border-right: 3px solid #e2e8f0;
   display: flex;
   flex-direction: column;
   position: relative;
   min-height: 100%;
   box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.1);
-}
-
-.code-panel::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 3px;
-  height: 100%;
-  background: linear-gradient(to bottom, #667eea, #764ba2, #667eea);
-  background-size: 100% 200%;
-  animation: shimmer 4s ease-in-out infinite;
+  overflow: hidden;
 }
 
 .preview-panel {
@@ -434,6 +398,7 @@ body {
   overflow: hidden;
   white-space: nowrap;
   letter-spacing: 0.3px;
+  flex: 1 0 auto;
 }
 
 .example-tabs .tab::before {
@@ -567,18 +532,6 @@ body {
   border: 1px solid #e9ecef;
   position: relative;
   overflow: hidden;
-}
-
-.mermaid-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
-  background-size: 200% 100%;
-  animation: shimmer 3s ease-in-out infinite;
 }
 
 .additional-examples {
