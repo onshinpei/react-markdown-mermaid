@@ -1,9 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import { rehypeMermaid, MermaidBlock } from '../src/index';
+import { MermaidBlock } from '../src/index';
 
-type MarkdownExampleData = {
+type ReactExampleData = {
   title: string;
   description: string;
   sections: {
@@ -13,10 +11,6 @@ type MarkdownExampleData = {
     class: { title: string; code: string };
     pie: { title: string; code: string };
     state: { title: string; code: string };
-    code: { title: string; description: string; code: string };
-    list: { title: string; items: string[] };
-    table: { title: string; headers: string[]; rows: string[][] };
-    summary: { title: string; content: string };
   };
 };
 
@@ -27,12 +21,12 @@ type LabelsData = {
   reactUsageCode: string;
 };
 
-type MarkdownExampleProps = {
+type ReactExampleProps = {
   lang: 'zh' | 'en';
 };
 
-const MarkdownExample: React.FC<MarkdownExampleProps> = ({ lang }) => {
-  const [data, setData] = useState<MarkdownExampleData | null>(null);
+const ReactExample: React.FC<ReactExampleProps> = ({ lang }) => {
+  const [data, setData] = useState<ReactExampleData | null>(null);
   const [labels, setLabels] = useState<LabelsData | null>(null);
   const [selectedExample, setSelectedExample] = useState<string>('flowchart');
 
@@ -42,13 +36,13 @@ const MarkdownExample: React.FC<MarkdownExampleProps> = ({ lang }) => {
       try {
         const mod = await (lang === 'zh' ? import('./data/zh.json') : import('./data/en.json'));
         if (!cancelled) {
-          const data = (mod as { default?: { markdownExample: MarkdownExampleData; labels: LabelsData } }).default ?? (mod as unknown as { markdownExample: MarkdownExampleData; labels: LabelsData });
-          setData(data.markdownExample);
+          const data = (mod as { default?: { reactExample: ReactExampleData; labels: LabelsData } }).default ?? (mod as unknown as { reactExample: ReactExampleData; labels: LabelsData });
+          setData(data.reactExample);
           setLabels(data.labels);
         }
       } catch (e) {
         // eslint-disable-next-line no-console
-        console.error('Failed to load markdown example data', e);
+        console.error('Failed to load react example data', e);
         if (!cancelled) {
           setData(null);
           setLabels(null);
@@ -120,9 +114,7 @@ const MarkdownExample: React.FC<MarkdownExampleProps> = ({ lang }) => {
     const componentName = getComponentName(example.key, example.section.title);
 
     const reactCode = `import React from 'react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import { rehypeMermaid } from 'react-markdown-mermaid';
+import { MermaidBlock } from 'react-markdown-mermaid';
 
 const ${componentName}Example = () => {
   const mermaidConfig = {
@@ -141,21 +133,13 @@ const ${componentName}Example = () => {
     },
   };
 
-  const markdownContent = \`# ${example.section.title}
-
-\`\`\`mermaid
-${example.section.code}
-\`\`\`
-\`;
-
   return (
-    <div className="markdown-container">
-      <ReactMarkdown 
-        remarkPlugins={[remarkGfm]} 
-        rehypePlugins={[[rehypeMermaid, { mermaidConfig, ssr: false }]]}
-      >
-        {markdownContent}
-      </ReactMarkdown>
+    <div className="mermaid-container">
+      <MermaidBlock 
+        code={\`${example.section.code}\`}
+        mermaidConfig={mermaidConfig}
+        className="demo-mermaid"
+      />
     </div>
   );
 };
@@ -166,23 +150,10 @@ export default ${componentName}Example;`;
   };
 
   const renderMermaidExample = (example: { key: string; section: { title: string; code: string } }) => {
-    const markdownContent = `
-\`\`\`mermaid
-${example.section.code}
-\`\`\`
-`;
-
-    const components = {
-      MermaidBlock: MermaidBlock,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any;
-
     return (
       <div className="mermaid-example">
         <div className="mermaid-container">
-          <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[[rehypeMermaid, { mermaidConfig, ssr: false }]]} components={components}>
-            {markdownContent}
-          </ReactMarkdown>
+          <MermaidBlock code={example.section.code} mermaidConfig={mermaidConfig} className="demo-mermaid" />
         </div>
       </div>
     );
@@ -223,4 +194,4 @@ ${example.section.code}
   );
 };
 
-export default MarkdownExample;
+export default ReactExample;

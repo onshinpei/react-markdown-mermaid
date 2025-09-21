@@ -2,7 +2,8 @@
   "appTitle": "react-markdown-mermaid Demo",
   "appSubtitle": "A lightweight component and rehype plugin to render Mermaid diagrams in React",
   "tabs": {
-    "markdown": "React-Markdown Example"
+    "markdown": "React-Markdown Example",
+    "react": "Standalone Usage Example"
   },
   "labels": {
     "viewMermaidCode": "View Mermaid Code",
@@ -11,6 +12,8 @@
     "mermaidDocs": "Mermaid Docs",
     "markdownExampleTitle": "React-Markdown + rehypeMermaid Example",
     "markdownExampleDescription": "This example demonstrates how to use the rehypeMermaid plugin in react-markdown to render Mermaid diagrams.",
+    "reactExampleTitle": "Standalone MermaidBlock Usage Example",
+    "reactExampleDescription": "This example demonstrates how to use the MermaidBlock component directly to render Mermaid diagrams without react-markdown.",
     "codeExample": "Code Example",
     "renderEffect": "Render Effect",
     "mermaidCode": "Mermaid Code",
@@ -100,6 +103,36 @@
       "summary": {
         "title": "Summary",
         "content": "This example demonstrates how to use the rehypeMermaid plugin in react-markdown to render Mermaid diagrams. The plugin automatically recognizes ```mermaid code blocks in markdown and converts them to MermaidBlock components."
+      }
+    }
+  },
+  "reactExample": {
+    "title": "Standalone MermaidBlock Usage Example",
+    "description": "This example demonstrates how to use the MermaidBlock component directly to render Mermaid diagrams without react-markdown.",
+    "sections": {
+      "flowchart": {
+        "title": "Flowchart Example",
+        "code": "graph TD\n    A[Start] --> B{Condition?}\n    B -->|Yes| C[Handle A]\n    B -->|No| D[Handle B]\n    C --> E[End]\n    D --> E"
+      },
+      "sequence": {
+        "title": "Sequence Diagram Example",
+        "code": "sequenceDiagram\n    participant User\n    participant System\n    participant Database\n    \n    User->>System: Login request\n    System->>Database: Verify user\n    Database-->>System: Return result\n    System-->>User: Login response"
+      },
+      "gantt": {
+        "title": "Gantt Chart Example",
+        "code": "gantt\n    title Project Plan\n    dateFormat  YYYY-MM-DD\n    section Design\n    Requirements   :done, des1, 2024-01-01, 2024-01-10\n    System Design  :active, des2, 2024-01-11, 2024-01-25\n    section Development\n    Implementation  :des3, 2024-01-26, 2024-02-15\n    Testing & Debug :des4, 2024-02-16, 2024-02-28"
+      },
+      "class": {
+        "title": "Class Diagram Example",
+        "code": "classDiagram\n    class Animal {\n        +String name\n        +int age\n        +makeSound()\n    }\n    class Dog {\n        +bark()\n    }\n    class Cat {\n        +meow()\n    }\n    Animal <|-- Dog\n    Animal <|-- Cat"
+      },
+      "pie": {
+        "title": "Pie Chart Example",
+        "code": "pie title Browser market share\n    \"Chrome\" : 65.5\n    \"Firefox\" : 15.2\n    \"Safari\" : 12.3\n    \"Edge\" : 7.0"
+      },
+      "state": {
+        "title": "State Diagram Example",
+        "code": "stateDiagram-v2\n    [*] --> Idle\n    Idle --> Running : Start\n    Running --> Paused : Pause\n    Paused --> Running : Resume\n    Running --> Idle : Stop\n    Paused --> Idle : Stop"
       }
     }
   }

@@ -10,7 +10,7 @@ type ExampleItem = {
 type I18nData = {
   appTitle: string;
   appSubtitle: string;
-  tabs: { markdown: string };
+  tabs: { markdown: string; react: string };
   labels: {
     viewMermaidCode: string;
     useMermaidBlock: string;
@@ -18,10 +18,13 @@ type I18nData = {
     mermaidDocs: string;
     markdownExampleTitle: string;
     markdownExampleDescription: string;
+    reactExampleTitle: string;
+    reactExampleDescription: string;
   };
   examples: Record<string, ExampleItem>;
 };
 import MarkdownExample from './MarkdownExample';
+import ReactExample from './ReactExample';
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState('markdown');
@@ -73,11 +76,9 @@ const App: React.FC = () => {
         <button className={`tab ${activeTab === 'markdown' ? 'active' : ''}`} onClick={() => setActiveTab('markdown')}>
           {i18n?.tabs?.markdown ?? 'React-Markdown'}
         </button>
-        {Object.entries(examples).map(([key, example]) => (
-          <button key={key} className={`tab ${activeTab === key ? 'active' : ''}`} onClick={() => setActiveTab(key)}>
-            {example.title}
-          </button>
-        ))}
+        <button className={`tab ${activeTab === 'react' ? 'active' : ''}`} onClick={() => setActiveTab('react')}>
+          {i18n?.tabs?.react ?? '单独使用示例'}
+        </button>
       </nav>
 
       <main className="content">
@@ -87,6 +88,15 @@ const App: React.FC = () => {
             <p>{i18n?.labels?.markdownExampleDescription ?? ''}</p>
 
             <MarkdownExample lang={lang} />
+          </div>
+        )}
+
+        {activeTab === 'react' && (
+          <div className="example active">
+            <h2>{i18n?.labels?.reactExampleTitle ?? '单独使用 MermaidBlock 示例'}</h2>
+            <p>{i18n?.labels?.reactExampleDescription ?? '这个示例展示了如何直接使用 MermaidBlock 组件来渲染 Mermaid 图表，无需 react-markdown。'}</p>
+
+            <ReactExample lang={lang} />
           </div>
         )}
 
