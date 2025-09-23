@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { MermaidBlock } from '../src/index';
+import hljs from 'highlight.js';
 
 type ReactExampleData = {
   title: string;
@@ -88,9 +89,19 @@ const ReactExample: React.FC<ReactExampleProps> = ({ lang }) => {
   const currentExample = examples.find((ex) => ex.key === selectedExample);
 
   const renderCodeBlock = (code: string, language: string = 'mermaid') => {
+    const html = (() => {
+      try {
+        if (language) {
+          return hljs.highlight(code, { language }).value;
+        }
+      } catch {
+        // ignore and fallback
+      }
+      return hljs.highlightAuto(code).value;
+    })();
     return (
-      <pre className="code-block">
-        <code className={`language-${language}`}>{code}</code>
+      <pre className="code-block hljs">
+        <code className={`language-${language}`} dangerouslySetInnerHTML={{ __html: html }} />
       </pre>
     );
   };

@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { rehypeMermaid, MermaidBlock } from '../src/index';
+import hljs from 'highlight.js';
 
 type MarkdownExampleData = {
   title: string;
@@ -94,9 +95,19 @@ const MarkdownExample: React.FC<MarkdownExampleProps> = ({ lang }) => {
   const currentExample = examples.find((ex) => ex.key === selectedExample);
 
   const renderCodeBlock = (code: string, language: string = 'mermaid') => {
+    const html = (() => {
+      try {
+        if (language) {
+          return hljs.highlight(code, { language }).value;
+        }
+      } catch {
+        // ignore and fallback
+      }
+      return hljs.highlightAuto(code).value;
+    })();
     return (
-      <pre className="code-block">
-        <code className={`language-${language}`}>{code}</code>
+      <pre className="code-block hljs">
+        <code className={`language-${language}`} dangerouslySetInnerHTML={{ __html: html }} />
       </pre>
     );
   };
