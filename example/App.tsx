@@ -148,7 +148,7 @@ const App: React.FC = () => {
 
       <footer className="app-footer">
         <p>
-          <a href="https://github.com/your-username/react-mermaid" target="_blank" rel="noopener noreferrer">
+          <a href="https://github.com/onshinpei/react-markdown-mermaid" target="_blank" rel="noopener noreferrer">
             {i18n?.labels?.github ?? 'GitHub'}
           </a>
           {' | '}
