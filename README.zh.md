@@ -97,7 +97,7 @@ const App = () => {
   return (
     <div>
       <h1>流程图示例</h1>
-      <Mermaid chart={chart} />
+      <Mermaid code={chart} />
     </div>
   );
 };
@@ -131,7 +131,7 @@ const App = () => {
 import { Mermaid } from 'react-markdown-mermaid';
 
 <Mermaid
-  chart={chartCode}
+  code={chartCode}
   config={{
     theme: 'dark',
     flowchart: { useMaxWidth: true },
@@ -315,7 +315,7 @@ const mermaidConfig = {
 
 ```tsx
 <Mermaid
-  chart={chartCode}
+  code={chartCode}
   onError={(error) => {
     console.error('Mermaid渲染错误:', error);
     // 显示友好的错误信息
@@ -358,10 +358,10 @@ const BasicExample = () => {
   return (
     <div>
       <h2>流程图</h2>
-      <Mermaid chart={flowchart} />
+      <Mermaid code={flowchart} />
 
       <h2>序列图</h2>
-      <Mermaid chart={sequenceDiagram} />
+      <Mermaid code={sequenceDiagram} />
     </div>
   );
 };

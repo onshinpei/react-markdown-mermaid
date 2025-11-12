@@ -98,7 +98,7 @@ const App = () => {
   return (
     <div>
       <h1>Flowchart Example</h1>
-      <Mermaid chart={chart} />
+      <Mermaid code={chart} />
     </div>
   );
 };
@@ -114,7 +114,7 @@ Standalone Mermaid diagram component.
 
 | Property      | Type                     | Default                      | Description            |
 | ------------- | ------------------------ | ---------------------------- | ---------------------- |
-| `chart`       | `string`                 | -                            | Mermaid diagram code   |
+| `code`        | `string`                 | -                            | Mermaid diagram code   |
 | `config`      | `MermaidConfig`          | -                            | Mermaid configuration  |
 | `id`          | `string`                 | auto-generated               | Diagram ID             |
 | `className`   | `string`                 | `'react-markdown-mermaid'`   | CSS class name         |
@@ -132,7 +132,7 @@ Standalone Mermaid diagram component.
 import { Mermaid } from 'react-markdown-mermaid';
 
 <Mermaid
-  chart={chartCode}
+  code={chartCode}
   config={{
     theme: 'dark',
     flowchart: { useMaxWidth: true },
@@ -316,7 +316,7 @@ const mermaidConfig = {
 
 ```tsx
 <Mermaid
-  chart={chartCode}
+  code={chartCode}
   onError={(error) => {
     console.error('Mermaid render error:', error);
     // Show a friendly error message
@@ -359,10 +359,10 @@ const BasicExample = () => {
   return (
     <div>
       <h2>Flowchart</h2>
-      <Mermaid chart={flowchart} />
+      <Mermaid code={flowchart} />
 
       <h2>Sequence Diagram</h2>
-      <Mermaid chart={sequenceDiagram} />
+      <Mermaid code={sequenceDiagram} />
     </div>
   );
 };

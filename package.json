@@ -5,6 +5,10 @@
   "main": "./dist/cjs/index.js",
   "types": "./dist/index.d.ts",
   "module": "./dist/esm/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/onshinpei/react-markdown-mermaid"
+  },
   "exports": {
     ".": {
       "import": {
