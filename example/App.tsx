@@ -28,7 +28,7 @@ import ReactExample from './ReactExample';
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState('markdown');
-  const [lang, setLang] = useState<'zh' | 'en'>('zh');
+  const [lang, setLang] = useState<'zh' | 'en'>('en');
   const [i18n, setI18n] = useState<I18nData | null>(null);
 
   useEffect(() => {

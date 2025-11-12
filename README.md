@@ -38,7 +38,7 @@ graph TD
   B -->|No| D[Handle B]
   C --> E[End]
   D --> E
-````
+```
 
 Here is a sequence diagram:
 
@@ -58,21 +58,21 @@ sequenceDiagram
 
 return (
 <ReactMarkdown
-rehypePlugins={[
-[
-rehypeMermaid,
-{
-mermaidConfig: {
-theme: 'default',
-flowchart: { useMaxWidth: true },
-},
-},
-],
-]}
-components={{
-        MermaidBlock: MermaidBlock,
-      }} >
-{markdown}
+  rehypePlugins={[
+    [
+      rehypeMermaid,
+      {
+        mermaidConfig: {
+          theme: 'default',
+          flowchart: { useMaxWidth: true },
+        },
+      },
+    ],
+  ]}
+  components={{
+      MermaidBlock: MermaidBlock,
+    }} >
+  {markdown}
 </ReactMarkdown>
 );
 };
@@ -102,7 +102,7 @@ const App = () => {
     </div>
   );
 };
-````
+```
 
 ## 📚 API Reference
 
@@ -229,6 +229,13 @@ import 'react-markdown-mermaid/style.css';
 
 ### 1. Flowchart
 
+```
+graph TD
+  A[Start] --> B{Decision}
+  B -->|Yes| C[Process]
+  B -->|No| D[End]
+```
+
 ```mermaid
 graph TD
   A[Start] --> B{Decision}
@@ -237,6 +244,14 @@ graph TD
 ```
 
 ### 2. Sequence Diagram
+
+```
+sequenceDiagram
+  participant User
+  participant System
+  User->>System: Request
+  System-->>User: Response
+```
 
 ```mermaid
 sequenceDiagram
