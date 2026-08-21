@@ -37,6 +37,7 @@ const MermaidBlock: React.FC<MermaidProps> = ({
     const initMermaid = async () => {
       try {
         await mermaidService.initialize({ startOnLoad: false, ...mermaidConfigRef.current } as MermaidConfig);
+        setError(null);
       } catch (err) {
         const error = err instanceof Error ? err : new Error('Failed to initialize mermaid');
         console.error('Failed to initialize mermaid:', err);
@@ -62,6 +63,7 @@ const MermaidBlock: React.FC<MermaidProps> = ({
         }
         setSvgElement(svgElement);
         svgIdRef.current = `#${viewID}`;
+        setError(null);
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : 'Failed to render mermaid chart';
         setError(errorMessage);
